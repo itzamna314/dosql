@@ -1,5 +1,5 @@
 # dosql
-Simple go cli to execute sql commands
+Simple cli to execute sql commands
 
 # usage
 ```
@@ -17,11 +17,21 @@ dosql reads a toml config file to connect to your database.  By default, the fil
 # sample config file
 ```
 [default]
-server="***"
-port="***"
-database="***"
-user_id="***"
-password="***"
+server="foo.bar.com"
+port="1433"
+database="MyDatabase"
+user_id="iamauser"
+password="password"
+encrypt="true"
+trust_server_certificate="true"
+connection_timeout="30"
+driver="mssql"
+[another_db]
+server="bat.baz.com"
+port="1433"
+database="MyOtherDatabase"
+user_id="iamanotheruser"
+password="thesamepasswordonoes!"
 encrypt="true"
 trust_server_certificate="true"
 connection_timeout="30"
