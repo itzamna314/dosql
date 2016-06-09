@@ -21,7 +21,6 @@ Arguments:
 Options:
 	-e=env    Configuration environment [default: default]
 	-F=file   Configuration file [default: /usr/local/etc/dosql/config.toml]
-	-f        Use this flag to enable commands that mutate data
 `
 	version = `dosql 0.0.1`
 )
@@ -63,12 +62,10 @@ func main() {
 		script = string(b[:])
 	}
 
-	if force, ok := dict["-f"].(bool); !ok || !force {
-		isSafe := scriptIsSafe(script)
-		if !isSafe {
-			fmt.Printf("Script contained commands that could mutate data, and -f was not set\n")
-			os.Exit(1)
-		}
+	isSafe := scriptIsSafe(script)
+	if !isSafe {
+		fmt.Printf("Script contained commands that could mutate data\n")
+		os.Exit(1)
 	}
 
 	queryAndPrint(db, script)
