@@ -5,13 +5,17 @@ import (
 	_ "github.com/denisenkom/go-mssqldb"
 	"github.com/docopt/docopt-go"
 	"github.com/jmoiron/sqlx"
+	"io/ioutil"
 	"os"
 )
 
 const (
 	usage = `
 Usage:
-	dosql [ -F configFile ] [ -e environment ] <script>
+	dosql [ -F configFile ] [ -e environment ] [<script>]
+
+Arguments:
+	<script>  The script to run.  If it is not provided, reads from stdin
 
 Options:
 	-e=env   Configuration environment [default: default]
@@ -42,7 +46,17 @@ func main() {
 		os.Exit(3)
 	}
 
-	script := dict["<script>"].(string)
+	script, ok := dict["<script>"].(string)
+	if !ok {
+		b, err := ioutil.ReadAll(os.Stdin)
+		if err != nil {
+			fmt.Printf("Failed to read from stdin: %s\n", err)
+			os.Exit(1)
+		}
+
+		script = string(b[:])
+	}
+
 	rows, err := db.Queryx(script)
 	if err != nil {
 		fmt.Printf("Failed to execute query: %s\n", err)
