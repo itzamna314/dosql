@@ -64,7 +64,7 @@ func main() {
 
 	isSafe := scriptIsSafe(script)
 	if !isSafe {
-		fmt.Printf("Script contained commands that could mutate data\n")
+		fmt.Printf("Error: Script contained commands that could mutate data.  Aborting.\n")
 		os.Exit(1)
 	}
 
