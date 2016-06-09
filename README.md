@@ -29,4 +29,4 @@ driver="mssql"
 ```
 
 # drivers
-Currently, only the mssql driver is supported.  Adding new driver support should be a simple matter of importing the desired driver, and building a correctly-formatted connection string in config.go.  If you would like to add support for a new driver, please submit a pull request.
+Currently, only the mssql driver is supported.  Adding new driver support should be a simple matter of importing the desired driver and building a correctly-formatted connection string in config.go.  If you would like to add support for a new driver, please submit a pull request.
