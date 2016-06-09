@@ -11,13 +11,13 @@ import (
 const (
 	usage = `
 Usage:
-	tsqlexec [ -F configFile ] [ -e environment ] <script>
+	dosql [ -F configFile ] [ -e environment ] <script>
 
 Options:
 	-e=env   Configuration environment [default: default]
-	-F=file  Configuration file [default: /usr/local/etc/tsqlcmd/config.toml]
+	-F=file  Configuration file [default: /usr/local/etc/dosql/config.toml]
 `
-	version = `tsqlcmd 0.0.1`
+	version = `dosql 0.0.1`
 )
 
 func main() {
