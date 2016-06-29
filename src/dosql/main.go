@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"os"
 	"strings"
+	"text/tabwriter"
 )
 
 const (
@@ -72,6 +73,9 @@ func main() {
 }
 
 func queryAndPrint(db *sqlx.DB, script string) {
+	w := new(tabwriter.Writer)
+	w.Init(os.Stdout, 0, 8, 1, '\t', 0)
+
 	rows, err := db.Queryx(script)
 	if err != nil {
 		fmt.Printf("Failed to execute query: %s\n", err)
@@ -83,9 +87,9 @@ func queryAndPrint(db *sqlx.DB, script string) {
 		os.Exit(5)
 	} else {
 		for _, c := range columns {
-			fmt.Printf("%s\t", c)
+			fmt.Fprintf(w, "%s\t", c)
 		}
-		fmt.Printf("\n")
+		fmt.Fprintf(w, "\n")
 	}
 
 	for rows.Next() {
@@ -96,17 +100,19 @@ func queryAndPrint(db *sqlx.DB, script string) {
 		}
 
 		for _, c := range r {
-			fmt.Printf("%v\t", c)
+			fmt.Fprintf(w, "%v\t", c)
 		}
-		fmt.Printf("\n")
+		fmt.Fprintf(w, "\n")
 	}
+
+	w.Flush()
 }
 
 func scriptIsSafe(script string) bool {
 	lowerScript := strings.ToLower(script)
 
 	for _, k := range unsafeKeywords {
-		if strings.Contains(lowerScript, k) {
+		if strings.Contains(lowerScript, k+" ") {
 			return false
 		}
 	}
